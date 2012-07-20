@@ -1,0 +1,9 @@
+parameters:
+#    ib_media_proxy.example.class: IB\MediaProxyBundle\Example
+
+services:
+    ib_media_proxy.extension:
+        class: IB\MediaProxyBundle\Extension\MediaProxyExtension
+        tags:
+            -  { name: twig.extension }
+        arguments: [@router, @service_container]
