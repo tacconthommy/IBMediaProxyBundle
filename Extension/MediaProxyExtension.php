@@ -25,7 +25,7 @@ class MediaProxyExtension extends \Twig_Extension {
 
 	public function getFilters() {
 		return array(
-			'proxy_url'  => new \Twig_Filter_Method($this, 'proxyUrl'),
+			'ib_proxy_url'  => new \Twig_Filter_Method($this, 'proxyUrl'),
 		);
 	}
 
