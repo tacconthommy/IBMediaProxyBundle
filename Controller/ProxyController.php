@@ -10,6 +10,12 @@ use IB\MediaProxyBundle\Exception\WrongHashException;
 class ProxyController extends Controller
 {
 	
+	/**
+	 * Action to receive proxied media
+	 *
+	 * @return media data
+	 * @author Thomas Bretzke
+	 **/
 	public function proxyMediaAction($hash)
 	{
 		$request = $this->getRequest();
