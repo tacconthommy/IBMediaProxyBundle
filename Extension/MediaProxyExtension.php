@@ -31,6 +31,12 @@ class MediaProxyExtension extends \Twig_Extension {
 
 	public function proxyUrl($url) {
 		$parsedUrl = parse_url($url);
+		$secured = false;
+
+		if ( (!empty($_SERVER['HTTPS'])) && ($_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ) {
+			$secured = true;
+		}
+
 		// Has scheme
 		if (array_key_exists('scheme', $parsedUrl)) {
 			// If we have to ignore https, we have to pre check the protocol
@@ -44,9 +50,11 @@ class MediaProxyExtension extends \Twig_Extension {
 			$prefixPath = $this->container->getParameter('ib_media_proxy.prefix_path');
 			return $this->container->getParameter('ib_media_proxy.prefix_path').$url;
 		}
-		// Generate proxy path
-		$hash = hash_hmac($this->container->getParameter('ib_media_proxy.algorithm'), $url, $this->container->getParameter('ib_media_proxy.secret'));
-		return $this->router->generate('IBMediaProxyBundle_proxy', array('hash' => urlencode($hash))).'?path='.rawurlencode($url);
+		if ($secured) {
+			// Generate proxy path
+			$hash = hash_hmac($this->container->getParameter('ib_media_proxy.algorithm'), $url, $this->container->getParameter('ib_media_proxy.secret'));
+			return $this->router->generate('IBMediaProxyBundle_proxy', array('hash' => urlencode($hash))).'?path='.rawurlencode($url);			
+		}
 	}
 
 	public function getName()
