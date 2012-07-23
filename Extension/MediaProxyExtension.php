@@ -50,10 +50,12 @@ class MediaProxyExtension extends \Twig_Extension {
 			$prefixPath = $this->container->getParameter('ib_media_proxy.prefix_path');
 			return $this->container->getParameter('ib_media_proxy.prefix_path').$url;
 		}
-		if ($secured) {
+		if ($secured == true) {
 			// Generate proxy path
 			$hash = hash_hmac($this->container->getParameter('ib_media_proxy.algorithm'), $url, $this->container->getParameter('ib_media_proxy.secret'));
 			return $this->router->generate('IBMediaProxyBundle_proxy', array('hash' => urlencode($hash))).'?path='.rawurlencode($url);			
+		} else {
+			return $url;
 		}
 	}
 
